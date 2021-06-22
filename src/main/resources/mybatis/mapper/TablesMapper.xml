@@ -1,0 +1,1523 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="demo.spring.boot.demospringboot.mybatis.dao.TablesDAO">
+
+    <resultMap id="resultMap" type="demo.spring.boot.demospringboot.mybatis.vo.TablesVo">
+        <result column="TABLE_CATALOG" property="tableCatalog"/>
+        <result column="TABLE_SCHEMA" property="tableSchema"/>
+        <result column="TABLE_NAME" property="tableName"/>
+        <result column="TABLE_TYPE" property="tableType"/>
+        <result column="ENGINE" property="engine"/>
+        <result column="VERSION" property="version"/>
+        <result column="ROW_FORMAT" property="rowFormat"/>
+        <result column="TABLE_ROWS" property="tableRows"/>
+        <result column="AVG_ROW_LENGTH" property="avgRowLength"/>
+        <result column="DATA_LENGTH" property="dataLength"/>
+        <result column="MAX_DATA_LENGTH" property="maxDataLength"/>
+        <result column="INDEX_LENGTH" property="indexLength"/>
+        <result column="DATA_FREE" property="dataFree"/>
+        <result column="AUTO_INCREMENT" property="autoIncrement"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="CHECK_TIME" property="checkTime"/>
+        <result column="TABLE_COLLATION" property="tableCollation"/>
+        <result column="CHECKSUM" property="checksum"/>
+        <result column="CREATE_OPTIONS" property="createOptions"/>
+        <result column="TABLE_COMMENT" property="tableComment"/>
+    </resultMap>
+
+    <insert id="insert"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.TablesVo">
+        INSERT INTO `information_schema`.`TABLES`(
+        `TABLE_CATALOG` ,
+        `TABLE_SCHEMA` ,
+        `TABLE_NAME` ,
+        `TABLE_TYPE` ,
+        `ENGINE` ,
+        `VERSION` ,
+        `ROW_FORMAT` ,
+        `TABLE_ROWS` ,
+        `AVG_ROW_LENGTH` ,
+        `DATA_LENGTH` ,
+        `MAX_DATA_LENGTH` ,
+        `INDEX_LENGTH` ,
+        `DATA_FREE` ,
+        `AUTO_INCREMENT` ,
+        `CREATE_TIME` ,
+        `UPDATE_TIME` ,
+        `CHECK_TIME` ,
+        `TABLE_COLLATION` ,
+        `CHECKSUM` ,
+        `CREATE_OPTIONS` ,
+        `TABLE_COMMENT` 
+        )VALUE(
+          #{tableCatalog}  ,
+          #{tableSchema}  ,
+          #{tableName}  ,
+          #{tableType}  ,
+          #{engine}  ,
+          #{version}  ,
+          #{rowFormat}  ,
+          #{tableRows}  ,
+          #{avgRowLength}  ,
+          #{dataLength}  ,
+          #{maxDataLength}  ,
+          #{indexLength}  ,
+          #{dataFree}  ,
+          #{autoIncrement}  ,
+          #{createTime}  ,
+          #{updateTime}  ,
+          #{checkTime}  ,
+          #{tableCollation}  ,
+          #{checksum}  ,
+          #{createOptions}  ,
+          #{tableComment}  
+        )
+    </insert>
+
+    <insert id="inserts"
+            parameterType="java.util.List">
+        INSERT INTO `information_schema`.`TABLES`(
+        `TABLE_CATALOG`,
+        `TABLE_SCHEMA`,
+        `TABLE_NAME`,
+        `TABLE_TYPE`,
+        `ENGINE`,
+        `VERSION`,
+        `ROW_FORMAT`,
+        `TABLE_ROWS`,
+        `AVG_ROW_LENGTH`,
+        `DATA_LENGTH`,
+        `MAX_DATA_LENGTH`,
+        `INDEX_LENGTH`,
+        `DATA_FREE`,
+        `AUTO_INCREMENT`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `CHECK_TIME`,
+        `TABLE_COLLATION`,
+        `CHECKSUM`,
+        `CREATE_OPTIONS`,
+        `TABLE_COMMENT`
+        )VALUES
+        <foreach collection="vos" item="item" separator=",">
+            (
+            #{item.tableCatalog},
+            #{item.tableSchema},
+            #{item.tableName},
+            #{item.tableType},
+            #{item.engine},
+            #{item.version},
+            #{item.rowFormat},
+            #{item.tableRows},
+            #{item.avgRowLength},
+            #{item.dataLength},
+            #{item.maxDataLength},
+            #{item.indexLength},
+            #{item.dataFree},
+            #{item.autoIncrement},
+            #{item.createTime},
+            #{item.updateTime},
+            #{item.checkTime},
+            #{item.tableCollation},
+            #{item.checksum},
+            #{item.createOptions},
+            #{item.tableComment}
+            )
+        </foreach>
+    </insert>
+
+    <select id="queryBase" resultMap="resultMap"
+            resultType="demo.spring.boot.demospringboot.mybatis.vo.TablesVo"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.TablesVo">
+        SELECT
+        `TABLE_CATALOG`,
+        `TABLE_SCHEMA`,
+        `TABLE_NAME`,
+        `TABLE_TYPE`,
+        `ENGINE`,
+        `VERSION`,
+        `ROW_FORMAT`,
+        `TABLE_ROWS`,
+        `AVG_ROW_LENGTH`,
+        `DATA_LENGTH`,
+        `MAX_DATA_LENGTH`,
+        `INDEX_LENGTH`,
+        `DATA_FREE`,
+        `AUTO_INCREMENT`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `CHECK_TIME`,
+        `TABLE_COLLATION`,
+        `CHECKSUM`,
+        `CREATE_OPTIONS`,
+        `TABLE_COMMENT`
+        FROM `information_schema`.`TABLES`
+        <where>
+            1 = 1
+            <if test="tableCatalog != null">
+                AND `TABLE_CATALOG` = #{tableCatalog}
+            </if>
+            <if test="tableSchema != null">
+                AND `TABLE_SCHEMA` = #{tableSchema}
+            </if>
+            <if test="tableName != null">
+                AND `TABLE_NAME` = #{tableName}
+            </if>
+            <if test="tableType != null">
+                AND `TABLE_TYPE` = #{tableType}
+            </if>
+            <if test="engine != null">
+                AND `ENGINE` = #{engine}
+            </if>
+            <if test="version != null">
+                AND `VERSION` = #{version}
+            </if>
+            <if test="rowFormat != null">
+                AND `ROW_FORMAT` = #{rowFormat}
+            </if>
+            <if test="tableRows != null">
+                AND `TABLE_ROWS` = #{tableRows}
+            </if>
+            <if test="avgRowLength != null">
+                AND `AVG_ROW_LENGTH` = #{avgRowLength}
+            </if>
+            <if test="dataLength != null">
+                AND `DATA_LENGTH` = #{dataLength}
+            </if>
+            <if test="maxDataLength != null">
+                AND `MAX_DATA_LENGTH` = #{maxDataLength}
+            </if>
+            <if test="indexLength != null">
+                AND `INDEX_LENGTH` = #{indexLength}
+            </if>
+            <if test="dataFree != null">
+                AND `DATA_FREE` = #{dataFree}
+            </if>
+            <if test="autoIncrement != null">
+                AND `AUTO_INCREMENT` = #{autoIncrement}
+            </if>
+            <if test="createTime != null">
+                AND `CREATE_TIME` = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                AND `UPDATE_TIME` = #{updateTime}
+            </if>
+            <if test="checkTime != null">
+                AND `CHECK_TIME` = #{checkTime}
+            </if>
+            <if test="tableCollation != null">
+                AND `TABLE_COLLATION` = #{tableCollation}
+            </if>
+            <if test="checksum != null">
+                AND `CHECKSUM` = #{checksum}
+            </if>
+            <if test="createOptions != null">
+                AND `CREATE_OPTIONS` = #{createOptions}
+            </if>
+            <if test="tableComment != null">
+                AND `TABLE_COMMENT` = #{tableComment}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryMultiTerm" resultMap="resultMap"
+            resultType="demo.spring.boot.demospringboot.mybatis.vo.TablesVo"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.TablesMultiTermVo">
+        SELECT
+        `TABLE_CATALOG`,
+        `TABLE_SCHEMA`,
+        `TABLE_NAME`,
+        `TABLE_TYPE`,
+        `ENGINE`,
+        `VERSION`,
+        `ROW_FORMAT`,
+        `TABLE_ROWS`,
+        `AVG_ROW_LENGTH`,
+        `DATA_LENGTH`,
+        `MAX_DATA_LENGTH`,
+        `INDEX_LENGTH`,
+        `DATA_FREE`,
+        `AUTO_INCREMENT`,
+        `CREATE_TIME`,
+        `UPDATE_TIME`,
+        `CHECK_TIME`,
+        `TABLE_COLLATION`,
+        `CHECKSUM`,
+        `CREATE_OPTIONS`,
+        `TABLE_COMMENT`
+        FROM `information_schema`.`TABLES`
+        <where>
+            1 = 1
+            <if test="tableCatalog != null">
+                <if test="tableCatalog._in != null">
+                    AND `TABLE_CATALOG` in
+                    <foreach collection="TABLE_CATALOG._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableCatalog._notIn != null">
+                    AND `TABLE_CATALOG` not in
+                    <foreach collection="TABLE_CATALOG._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableCatalog._like != null">
+                    <foreach collection="TABLE_CATALOG._like" item="item">
+                        AND `TABLE_CATALOG` like #{item}
+                    </foreach>
+                </if>
+                <if test="tableCatalog._notLike != null">
+                    <foreach collection="TABLE_CATALOG._notLike" item="item">
+                        AND `TABLE_CATALOG` not like #{item}
+                    </foreach>
+                </if>
+                <if test="tableCatalog._regex != null">
+                    <foreach collection="TABLE_CATALOG._regex" item="item">
+                        AND `TABLE_CATALOG` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableCatalog._regex != null">
+                    <foreach collection="TABLE_CATALOG._regex" item="item">
+                        AND `TABLE_CATALOG` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableCatalog._lt != null">
+                    AND `TABLE_CATALOG` <![CDATA[ < ]]>  #{TABLE_CATALOG._lt}
+                </if>
+                <if test="tableCatalog._le != null">
+                    AND `TABLE_CATALOG` <![CDATA[ <= ]]>  #{{TABLE_CATALOG._lt}
+                </if>
+                <if test="tableCatalog._gt != null">
+                    AND `TABLE_CATALOG` <![CDATA[ > ]]>  #{{TABLE_CATALOG._lt}
+                </if>
+                <if test="tableCatalog._ge != null">
+                    AND `TABLE_CATALOG` <![CDATA[ >= ]]>  #{{TABLE_CATALOG._lt}
+                </if>
+            </if>
+            <if test="tableSchema != null">
+                <if test="tableSchema._in != null">
+                    AND `TABLE_SCHEMA` in
+                    <foreach collection="TABLE_SCHEMA._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableSchema._notIn != null">
+                    AND `TABLE_SCHEMA` not in
+                    <foreach collection="TABLE_SCHEMA._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableSchema._like != null">
+                    <foreach collection="TABLE_SCHEMA._like" item="item">
+                        AND `TABLE_SCHEMA` like #{item}
+                    </foreach>
+                </if>
+                <if test="tableSchema._notLike != null">
+                    <foreach collection="TABLE_SCHEMA._notLike" item="item">
+                        AND `TABLE_SCHEMA` not like #{item}
+                    </foreach>
+                </if>
+                <if test="tableSchema._regex != null">
+                    <foreach collection="TABLE_SCHEMA._regex" item="item">
+                        AND `TABLE_SCHEMA` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableSchema._regex != null">
+                    <foreach collection="TABLE_SCHEMA._regex" item="item">
+                        AND `TABLE_SCHEMA` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableSchema._lt != null">
+                    AND `TABLE_SCHEMA` <![CDATA[ < ]]>  #{TABLE_SCHEMA._lt}
+                </if>
+                <if test="tableSchema._le != null">
+                    AND `TABLE_SCHEMA` <![CDATA[ <= ]]>  #{{TABLE_SCHEMA._lt}
+                </if>
+                <if test="tableSchema._gt != null">
+                    AND `TABLE_SCHEMA` <![CDATA[ > ]]>  #{{TABLE_SCHEMA._lt}
+                </if>
+                <if test="tableSchema._ge != null">
+                    AND `TABLE_SCHEMA` <![CDATA[ >= ]]>  #{{TABLE_SCHEMA._lt}
+                </if>
+            </if>
+            <if test="tableName != null">
+                <if test="tableName._in != null">
+                    AND `TABLE_NAME` in
+                    <foreach collection="TABLE_NAME._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableName._notIn != null">
+                    AND `TABLE_NAME` not in
+                    <foreach collection="TABLE_NAME._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableName._like != null">
+                    <foreach collection="TABLE_NAME._like" item="item">
+                        AND `TABLE_NAME` like #{item}
+                    </foreach>
+                </if>
+                <if test="tableName._notLike != null">
+                    <foreach collection="TABLE_NAME._notLike" item="item">
+                        AND `TABLE_NAME` not like #{item}
+                    </foreach>
+                </if>
+                <if test="tableName._regex != null">
+                    <foreach collection="TABLE_NAME._regex" item="item">
+                        AND `TABLE_NAME` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableName._regex != null">
+                    <foreach collection="TABLE_NAME._regex" item="item">
+                        AND `TABLE_NAME` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableName._lt != null">
+                    AND `TABLE_NAME` <![CDATA[ < ]]>  #{TABLE_NAME._lt}
+                </if>
+                <if test="tableName._le != null">
+                    AND `TABLE_NAME` <![CDATA[ <= ]]>  #{{TABLE_NAME._lt}
+                </if>
+                <if test="tableName._gt != null">
+                    AND `TABLE_NAME` <![CDATA[ > ]]>  #{{TABLE_NAME._lt}
+                </if>
+                <if test="tableName._ge != null">
+                    AND `TABLE_NAME` <![CDATA[ >= ]]>  #{{TABLE_NAME._lt}
+                </if>
+            </if>
+            <if test="tableType != null">
+                <if test="tableType._in != null">
+                    AND `TABLE_TYPE` in
+                    <foreach collection="TABLE_TYPE._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableType._notIn != null">
+                    AND `TABLE_TYPE` not in
+                    <foreach collection="TABLE_TYPE._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableType._like != null">
+                    <foreach collection="TABLE_TYPE._like" item="item">
+                        AND `TABLE_TYPE` like #{item}
+                    </foreach>
+                </if>
+                <if test="tableType._notLike != null">
+                    <foreach collection="TABLE_TYPE._notLike" item="item">
+                        AND `TABLE_TYPE` not like #{item}
+                    </foreach>
+                </if>
+                <if test="tableType._regex != null">
+                    <foreach collection="TABLE_TYPE._regex" item="item">
+                        AND `TABLE_TYPE` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableType._regex != null">
+                    <foreach collection="TABLE_TYPE._regex" item="item">
+                        AND `TABLE_TYPE` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableType._lt != null">
+                    AND `TABLE_TYPE` <![CDATA[ < ]]>  #{TABLE_TYPE._lt}
+                </if>
+                <if test="tableType._le != null">
+                    AND `TABLE_TYPE` <![CDATA[ <= ]]>  #{{TABLE_TYPE._lt}
+                </if>
+                <if test="tableType._gt != null">
+                    AND `TABLE_TYPE` <![CDATA[ > ]]>  #{{TABLE_TYPE._lt}
+                </if>
+                <if test="tableType._ge != null">
+                    AND `TABLE_TYPE` <![CDATA[ >= ]]>  #{{TABLE_TYPE._lt}
+                </if>
+            </if>
+            <if test="engine != null">
+                <if test="engine._in != null">
+                    AND `ENGINE` in
+                    <foreach collection="ENGINE._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="engine._notIn != null">
+                    AND `ENGINE` not in
+                    <foreach collection="ENGINE._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="engine._like != null">
+                    <foreach collection="ENGINE._like" item="item">
+                        AND `ENGINE` like #{item}
+                    </foreach>
+                </if>
+                <if test="engine._notLike != null">
+                    <foreach collection="ENGINE._notLike" item="item">
+                        AND `ENGINE` not like #{item}
+                    </foreach>
+                </if>
+                <if test="engine._regex != null">
+                    <foreach collection="ENGINE._regex" item="item">
+                        AND `ENGINE` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="engine._regex != null">
+                    <foreach collection="ENGINE._regex" item="item">
+                        AND `ENGINE` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="engine._lt != null">
+                    AND `ENGINE` <![CDATA[ < ]]>  #{ENGINE._lt}
+                </if>
+                <if test="engine._le != null">
+                    AND `ENGINE` <![CDATA[ <= ]]>  #{{ENGINE._lt}
+                </if>
+                <if test="engine._gt != null">
+                    AND `ENGINE` <![CDATA[ > ]]>  #{{ENGINE._lt}
+                </if>
+                <if test="engine._ge != null">
+                    AND `ENGINE` <![CDATA[ >= ]]>  #{{ENGINE._lt}
+                </if>
+            </if>
+            <if test="version != null">
+                <if test="version._in != null">
+                    AND `VERSION` in
+                    <foreach collection="VERSION._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="version._notIn != null">
+                    AND `VERSION` not in
+                    <foreach collection="VERSION._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="version._like != null">
+                    <foreach collection="VERSION._like" item="item">
+                        AND `VERSION` like #{item}
+                    </foreach>
+                </if>
+                <if test="version._notLike != null">
+                    <foreach collection="VERSION._notLike" item="item">
+                        AND `VERSION` not like #{item}
+                    </foreach>
+                </if>
+                <if test="version._regex != null">
+                    <foreach collection="VERSION._regex" item="item">
+                        AND `VERSION` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="version._regex != null">
+                    <foreach collection="VERSION._regex" item="item">
+                        AND `VERSION` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="version._lt != null">
+                    AND `VERSION` <![CDATA[ < ]]>  #{VERSION._lt}
+                </if>
+                <if test="version._le != null">
+                    AND `VERSION` <![CDATA[ <= ]]>  #{{VERSION._lt}
+                </if>
+                <if test="version._gt != null">
+                    AND `VERSION` <![CDATA[ > ]]>  #{{VERSION._lt}
+                </if>
+                <if test="version._ge != null">
+                    AND `VERSION` <![CDATA[ >= ]]>  #{{VERSION._lt}
+                </if>
+            </if>
+            <if test="rowFormat != null">
+                <if test="rowFormat._in != null">
+                    AND `ROW_FORMAT` in
+                    <foreach collection="ROW_FORMAT._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="rowFormat._notIn != null">
+                    AND `ROW_FORMAT` not in
+                    <foreach collection="ROW_FORMAT._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="rowFormat._like != null">
+                    <foreach collection="ROW_FORMAT._like" item="item">
+                        AND `ROW_FORMAT` like #{item}
+                    </foreach>
+                </if>
+                <if test="rowFormat._notLike != null">
+                    <foreach collection="ROW_FORMAT._notLike" item="item">
+                        AND `ROW_FORMAT` not like #{item}
+                    </foreach>
+                </if>
+                <if test="rowFormat._regex != null">
+                    <foreach collection="ROW_FORMAT._regex" item="item">
+                        AND `ROW_FORMAT` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="rowFormat._regex != null">
+                    <foreach collection="ROW_FORMAT._regex" item="item">
+                        AND `ROW_FORMAT` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="rowFormat._lt != null">
+                    AND `ROW_FORMAT` <![CDATA[ < ]]>  #{ROW_FORMAT._lt}
+                </if>
+                <if test="rowFormat._le != null">
+                    AND `ROW_FORMAT` <![CDATA[ <= ]]>  #{{ROW_FORMAT._lt}
+                </if>
+                <if test="rowFormat._gt != null">
+                    AND `ROW_FORMAT` <![CDATA[ > ]]>  #{{ROW_FORMAT._lt}
+                </if>
+                <if test="rowFormat._ge != null">
+                    AND `ROW_FORMAT` <![CDATA[ >= ]]>  #{{ROW_FORMAT._lt}
+                </if>
+            </if>
+            <if test="tableRows != null">
+                <if test="tableRows._in != null">
+                    AND `TABLE_ROWS` in
+                    <foreach collection="TABLE_ROWS._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableRows._notIn != null">
+                    AND `TABLE_ROWS` not in
+                    <foreach collection="TABLE_ROWS._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableRows._like != null">
+                    <foreach collection="TABLE_ROWS._like" item="item">
+                        AND `TABLE_ROWS` like #{item}
+                    </foreach>
+                </if>
+                <if test="tableRows._notLike != null">
+                    <foreach collection="TABLE_ROWS._notLike" item="item">
+                        AND `TABLE_ROWS` not like #{item}
+                    </foreach>
+                </if>
+                <if test="tableRows._regex != null">
+                    <foreach collection="TABLE_ROWS._regex" item="item">
+                        AND `TABLE_ROWS` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableRows._regex != null">
+                    <foreach collection="TABLE_ROWS._regex" item="item">
+                        AND `TABLE_ROWS` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableRows._lt != null">
+                    AND `TABLE_ROWS` <![CDATA[ < ]]>  #{TABLE_ROWS._lt}
+                </if>
+                <if test="tableRows._le != null">
+                    AND `TABLE_ROWS` <![CDATA[ <= ]]>  #{{TABLE_ROWS._lt}
+                </if>
+                <if test="tableRows._gt != null">
+                    AND `TABLE_ROWS` <![CDATA[ > ]]>  #{{TABLE_ROWS._lt}
+                </if>
+                <if test="tableRows._ge != null">
+                    AND `TABLE_ROWS` <![CDATA[ >= ]]>  #{{TABLE_ROWS._lt}
+                </if>
+            </if>
+            <if test="avgRowLength != null">
+                <if test="avgRowLength._in != null">
+                    AND `AVG_ROW_LENGTH` in
+                    <foreach collection="AVG_ROW_LENGTH._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="avgRowLength._notIn != null">
+                    AND `AVG_ROW_LENGTH` not in
+                    <foreach collection="AVG_ROW_LENGTH._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="avgRowLength._like != null">
+                    <foreach collection="AVG_ROW_LENGTH._like" item="item">
+                        AND `AVG_ROW_LENGTH` like #{item}
+                    </foreach>
+                </if>
+                <if test="avgRowLength._notLike != null">
+                    <foreach collection="AVG_ROW_LENGTH._notLike" item="item">
+                        AND `AVG_ROW_LENGTH` not like #{item}
+                    </foreach>
+                </if>
+                <if test="avgRowLength._regex != null">
+                    <foreach collection="AVG_ROW_LENGTH._regex" item="item">
+                        AND `AVG_ROW_LENGTH` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="avgRowLength._regex != null">
+                    <foreach collection="AVG_ROW_LENGTH._regex" item="item">
+                        AND `AVG_ROW_LENGTH` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="avgRowLength._lt != null">
+                    AND `AVG_ROW_LENGTH` <![CDATA[ < ]]>  #{AVG_ROW_LENGTH._lt}
+                </if>
+                <if test="avgRowLength._le != null">
+                    AND `AVG_ROW_LENGTH` <![CDATA[ <= ]]>  #{{AVG_ROW_LENGTH._lt}
+                </if>
+                <if test="avgRowLength._gt != null">
+                    AND `AVG_ROW_LENGTH` <![CDATA[ > ]]>  #{{AVG_ROW_LENGTH._lt}
+                </if>
+                <if test="avgRowLength._ge != null">
+                    AND `AVG_ROW_LENGTH` <![CDATA[ >= ]]>  #{{AVG_ROW_LENGTH._lt}
+                </if>
+            </if>
+            <if test="dataLength != null">
+                <if test="dataLength._in != null">
+                    AND `DATA_LENGTH` in
+                    <foreach collection="DATA_LENGTH._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="dataLength._notIn != null">
+                    AND `DATA_LENGTH` not in
+                    <foreach collection="DATA_LENGTH._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="dataLength._like != null">
+                    <foreach collection="DATA_LENGTH._like" item="item">
+                        AND `DATA_LENGTH` like #{item}
+                    </foreach>
+                </if>
+                <if test="dataLength._notLike != null">
+                    <foreach collection="DATA_LENGTH._notLike" item="item">
+                        AND `DATA_LENGTH` not like #{item}
+                    </foreach>
+                </if>
+                <if test="dataLength._regex != null">
+                    <foreach collection="DATA_LENGTH._regex" item="item">
+                        AND `DATA_LENGTH` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="dataLength._regex != null">
+                    <foreach collection="DATA_LENGTH._regex" item="item">
+                        AND `DATA_LENGTH` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="dataLength._lt != null">
+                    AND `DATA_LENGTH` <![CDATA[ < ]]>  #{DATA_LENGTH._lt}
+                </if>
+                <if test="dataLength._le != null">
+                    AND `DATA_LENGTH` <![CDATA[ <= ]]>  #{{DATA_LENGTH._lt}
+                </if>
+                <if test="dataLength._gt != null">
+                    AND `DATA_LENGTH` <![CDATA[ > ]]>  #{{DATA_LENGTH._lt}
+                </if>
+                <if test="dataLength._ge != null">
+                    AND `DATA_LENGTH` <![CDATA[ >= ]]>  #{{DATA_LENGTH._lt}
+                </if>
+            </if>
+            <if test="maxDataLength != null">
+                <if test="maxDataLength._in != null">
+                    AND `MAX_DATA_LENGTH` in
+                    <foreach collection="MAX_DATA_LENGTH._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="maxDataLength._notIn != null">
+                    AND `MAX_DATA_LENGTH` not in
+                    <foreach collection="MAX_DATA_LENGTH._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="maxDataLength._like != null">
+                    <foreach collection="MAX_DATA_LENGTH._like" item="item">
+                        AND `MAX_DATA_LENGTH` like #{item}
+                    </foreach>
+                </if>
+                <if test="maxDataLength._notLike != null">
+                    <foreach collection="MAX_DATA_LENGTH._notLike" item="item">
+                        AND `MAX_DATA_LENGTH` not like #{item}
+                    </foreach>
+                </if>
+                <if test="maxDataLength._regex != null">
+                    <foreach collection="MAX_DATA_LENGTH._regex" item="item">
+                        AND `MAX_DATA_LENGTH` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="maxDataLength._regex != null">
+                    <foreach collection="MAX_DATA_LENGTH._regex" item="item">
+                        AND `MAX_DATA_LENGTH` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="maxDataLength._lt != null">
+                    AND `MAX_DATA_LENGTH` <![CDATA[ < ]]>  #{MAX_DATA_LENGTH._lt}
+                </if>
+                <if test="maxDataLength._le != null">
+                    AND `MAX_DATA_LENGTH` <![CDATA[ <= ]]>  #{{MAX_DATA_LENGTH._lt}
+                </if>
+                <if test="maxDataLength._gt != null">
+                    AND `MAX_DATA_LENGTH` <![CDATA[ > ]]>  #{{MAX_DATA_LENGTH._lt}
+                </if>
+                <if test="maxDataLength._ge != null">
+                    AND `MAX_DATA_LENGTH` <![CDATA[ >= ]]>  #{{MAX_DATA_LENGTH._lt}
+                </if>
+            </if>
+            <if test="indexLength != null">
+                <if test="indexLength._in != null">
+                    AND `INDEX_LENGTH` in
+                    <foreach collection="INDEX_LENGTH._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="indexLength._notIn != null">
+                    AND `INDEX_LENGTH` not in
+                    <foreach collection="INDEX_LENGTH._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="indexLength._like != null">
+                    <foreach collection="INDEX_LENGTH._like" item="item">
+                        AND `INDEX_LENGTH` like #{item}
+                    </foreach>
+                </if>
+                <if test="indexLength._notLike != null">
+                    <foreach collection="INDEX_LENGTH._notLike" item="item">
+                        AND `INDEX_LENGTH` not like #{item}
+                    </foreach>
+                </if>
+                <if test="indexLength._regex != null">
+                    <foreach collection="INDEX_LENGTH._regex" item="item">
+                        AND `INDEX_LENGTH` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="indexLength._regex != null">
+                    <foreach collection="INDEX_LENGTH._regex" item="item">
+                        AND `INDEX_LENGTH` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="indexLength._lt != null">
+                    AND `INDEX_LENGTH` <![CDATA[ < ]]>  #{INDEX_LENGTH._lt}
+                </if>
+                <if test="indexLength._le != null">
+                    AND `INDEX_LENGTH` <![CDATA[ <= ]]>  #{{INDEX_LENGTH._lt}
+                </if>
+                <if test="indexLength._gt != null">
+                    AND `INDEX_LENGTH` <![CDATA[ > ]]>  #{{INDEX_LENGTH._lt}
+                </if>
+                <if test="indexLength._ge != null">
+                    AND `INDEX_LENGTH` <![CDATA[ >= ]]>  #{{INDEX_LENGTH._lt}
+                </if>
+            </if>
+            <if test="dataFree != null">
+                <if test="dataFree._in != null">
+                    AND `DATA_FREE` in
+                    <foreach collection="DATA_FREE._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="dataFree._notIn != null">
+                    AND `DATA_FREE` not in
+                    <foreach collection="DATA_FREE._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="dataFree._like != null">
+                    <foreach collection="DATA_FREE._like" item="item">
+                        AND `DATA_FREE` like #{item}
+                    </foreach>
+                </if>
+                <if test="dataFree._notLike != null">
+                    <foreach collection="DATA_FREE._notLike" item="item">
+                        AND `DATA_FREE` not like #{item}
+                    </foreach>
+                </if>
+                <if test="dataFree._regex != null">
+                    <foreach collection="DATA_FREE._regex" item="item">
+                        AND `DATA_FREE` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="dataFree._regex != null">
+                    <foreach collection="DATA_FREE._regex" item="item">
+                        AND `DATA_FREE` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="dataFree._lt != null">
+                    AND `DATA_FREE` <![CDATA[ < ]]>  #{DATA_FREE._lt}
+                </if>
+                <if test="dataFree._le != null">
+                    AND `DATA_FREE` <![CDATA[ <= ]]>  #{{DATA_FREE._lt}
+                </if>
+                <if test="dataFree._gt != null">
+                    AND `DATA_FREE` <![CDATA[ > ]]>  #{{DATA_FREE._lt}
+                </if>
+                <if test="dataFree._ge != null">
+                    AND `DATA_FREE` <![CDATA[ >= ]]>  #{{DATA_FREE._lt}
+                </if>
+            </if>
+            <if test="autoIncrement != null">
+                <if test="autoIncrement._in != null">
+                    AND `AUTO_INCREMENT` in
+                    <foreach collection="AUTO_INCREMENT._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="autoIncrement._notIn != null">
+                    AND `AUTO_INCREMENT` not in
+                    <foreach collection="AUTO_INCREMENT._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="autoIncrement._like != null">
+                    <foreach collection="AUTO_INCREMENT._like" item="item">
+                        AND `AUTO_INCREMENT` like #{item}
+                    </foreach>
+                </if>
+                <if test="autoIncrement._notLike != null">
+                    <foreach collection="AUTO_INCREMENT._notLike" item="item">
+                        AND `AUTO_INCREMENT` not like #{item}
+                    </foreach>
+                </if>
+                <if test="autoIncrement._regex != null">
+                    <foreach collection="AUTO_INCREMENT._regex" item="item">
+                        AND `AUTO_INCREMENT` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="autoIncrement._regex != null">
+                    <foreach collection="AUTO_INCREMENT._regex" item="item">
+                        AND `AUTO_INCREMENT` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="autoIncrement._lt != null">
+                    AND `AUTO_INCREMENT` <![CDATA[ < ]]>  #{AUTO_INCREMENT._lt}
+                </if>
+                <if test="autoIncrement._le != null">
+                    AND `AUTO_INCREMENT` <![CDATA[ <= ]]>  #{{AUTO_INCREMENT._lt}
+                </if>
+                <if test="autoIncrement._gt != null">
+                    AND `AUTO_INCREMENT` <![CDATA[ > ]]>  #{{AUTO_INCREMENT._lt}
+                </if>
+                <if test="autoIncrement._ge != null">
+                    AND `AUTO_INCREMENT` <![CDATA[ >= ]]>  #{{AUTO_INCREMENT._lt}
+                </if>
+            </if>
+            <if test="createTime != null">
+                <if test="createTime._in != null">
+                    AND `CREATE_TIME` in
+                    <foreach collection="CREATE_TIME._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="createTime._notIn != null">
+                    AND `CREATE_TIME` not in
+                    <foreach collection="CREATE_TIME._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="createTime._like != null">
+                    <foreach collection="CREATE_TIME._like" item="item">
+                        AND `CREATE_TIME` like #{item}
+                    </foreach>
+                </if>
+                <if test="createTime._notLike != null">
+                    <foreach collection="CREATE_TIME._notLike" item="item">
+                        AND `CREATE_TIME` not like #{item}
+                    </foreach>
+                </if>
+                <if test="createTime._regex != null">
+                    <foreach collection="CREATE_TIME._regex" item="item">
+                        AND `CREATE_TIME` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="createTime._regex != null">
+                    <foreach collection="CREATE_TIME._regex" item="item">
+                        AND `CREATE_TIME` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="createTime._lt != null">
+                    AND `CREATE_TIME` <![CDATA[ < ]]>  #{CREATE_TIME._lt}
+                </if>
+                <if test="createTime._le != null">
+                    AND `CREATE_TIME` <![CDATA[ <= ]]>  #{{CREATE_TIME._lt}
+                </if>
+                <if test="createTime._gt != null">
+                    AND `CREATE_TIME` <![CDATA[ > ]]>  #{{CREATE_TIME._lt}
+                </if>
+                <if test="createTime._ge != null">
+                    AND `CREATE_TIME` <![CDATA[ >= ]]>  #{{CREATE_TIME._lt}
+                </if>
+            </if>
+            <if test="updateTime != null">
+                <if test="updateTime._in != null">
+                    AND `UPDATE_TIME` in
+                    <foreach collection="UPDATE_TIME._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="updateTime._notIn != null">
+                    AND `UPDATE_TIME` not in
+                    <foreach collection="UPDATE_TIME._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="updateTime._like != null">
+                    <foreach collection="UPDATE_TIME._like" item="item">
+                        AND `UPDATE_TIME` like #{item}
+                    </foreach>
+                </if>
+                <if test="updateTime._notLike != null">
+                    <foreach collection="UPDATE_TIME._notLike" item="item">
+                        AND `UPDATE_TIME` not like #{item}
+                    </foreach>
+                </if>
+                <if test="updateTime._regex != null">
+                    <foreach collection="UPDATE_TIME._regex" item="item">
+                        AND `UPDATE_TIME` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="updateTime._regex != null">
+                    <foreach collection="UPDATE_TIME._regex" item="item">
+                        AND `UPDATE_TIME` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="updateTime._lt != null">
+                    AND `UPDATE_TIME` <![CDATA[ < ]]>  #{UPDATE_TIME._lt}
+                </if>
+                <if test="updateTime._le != null">
+                    AND `UPDATE_TIME` <![CDATA[ <= ]]>  #{{UPDATE_TIME._lt}
+                </if>
+                <if test="updateTime._gt != null">
+                    AND `UPDATE_TIME` <![CDATA[ > ]]>  #{{UPDATE_TIME._lt}
+                </if>
+                <if test="updateTime._ge != null">
+                    AND `UPDATE_TIME` <![CDATA[ >= ]]>  #{{UPDATE_TIME._lt}
+                </if>
+            </if>
+            <if test="checkTime != null">
+                <if test="checkTime._in != null">
+                    AND `CHECK_TIME` in
+                    <foreach collection="CHECK_TIME._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="checkTime._notIn != null">
+                    AND `CHECK_TIME` not in
+                    <foreach collection="CHECK_TIME._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="checkTime._like != null">
+                    <foreach collection="CHECK_TIME._like" item="item">
+                        AND `CHECK_TIME` like #{item}
+                    </foreach>
+                </if>
+                <if test="checkTime._notLike != null">
+                    <foreach collection="CHECK_TIME._notLike" item="item">
+                        AND `CHECK_TIME` not like #{item}
+                    </foreach>
+                </if>
+                <if test="checkTime._regex != null">
+                    <foreach collection="CHECK_TIME._regex" item="item">
+                        AND `CHECK_TIME` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="checkTime._regex != null">
+                    <foreach collection="CHECK_TIME._regex" item="item">
+                        AND `CHECK_TIME` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="checkTime._lt != null">
+                    AND `CHECK_TIME` <![CDATA[ < ]]>  #{CHECK_TIME._lt}
+                </if>
+                <if test="checkTime._le != null">
+                    AND `CHECK_TIME` <![CDATA[ <= ]]>  #{{CHECK_TIME._lt}
+                </if>
+                <if test="checkTime._gt != null">
+                    AND `CHECK_TIME` <![CDATA[ > ]]>  #{{CHECK_TIME._lt}
+                </if>
+                <if test="checkTime._ge != null">
+                    AND `CHECK_TIME` <![CDATA[ >= ]]>  #{{CHECK_TIME._lt}
+                </if>
+            </if>
+            <if test="tableCollation != null">
+                <if test="tableCollation._in != null">
+                    AND `TABLE_COLLATION` in
+                    <foreach collection="TABLE_COLLATION._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableCollation._notIn != null">
+                    AND `TABLE_COLLATION` not in
+                    <foreach collection="TABLE_COLLATION._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableCollation._like != null">
+                    <foreach collection="TABLE_COLLATION._like" item="item">
+                        AND `TABLE_COLLATION` like #{item}
+                    </foreach>
+                </if>
+                <if test="tableCollation._notLike != null">
+                    <foreach collection="TABLE_COLLATION._notLike" item="item">
+                        AND `TABLE_COLLATION` not like #{item}
+                    </foreach>
+                </if>
+                <if test="tableCollation._regex != null">
+                    <foreach collection="TABLE_COLLATION._regex" item="item">
+                        AND `TABLE_COLLATION` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableCollation._regex != null">
+                    <foreach collection="TABLE_COLLATION._regex" item="item">
+                        AND `TABLE_COLLATION` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableCollation._lt != null">
+                    AND `TABLE_COLLATION` <![CDATA[ < ]]>  #{TABLE_COLLATION._lt}
+                </if>
+                <if test="tableCollation._le != null">
+                    AND `TABLE_COLLATION` <![CDATA[ <= ]]>  #{{TABLE_COLLATION._lt}
+                </if>
+                <if test="tableCollation._gt != null">
+                    AND `TABLE_COLLATION` <![CDATA[ > ]]>  #{{TABLE_COLLATION._lt}
+                </if>
+                <if test="tableCollation._ge != null">
+                    AND `TABLE_COLLATION` <![CDATA[ >= ]]>  #{{TABLE_COLLATION._lt}
+                </if>
+            </if>
+            <if test="checksum != null">
+                <if test="checksum._in != null">
+                    AND `CHECKSUM` in
+                    <foreach collection="CHECKSUM._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="checksum._notIn != null">
+                    AND `CHECKSUM` not in
+                    <foreach collection="CHECKSUM._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="checksum._like != null">
+                    <foreach collection="CHECKSUM._like" item="item">
+                        AND `CHECKSUM` like #{item}
+                    </foreach>
+                </if>
+                <if test="checksum._notLike != null">
+                    <foreach collection="CHECKSUM._notLike" item="item">
+                        AND `CHECKSUM` not like #{item}
+                    </foreach>
+                </if>
+                <if test="checksum._regex != null">
+                    <foreach collection="CHECKSUM._regex" item="item">
+                        AND `CHECKSUM` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="checksum._regex != null">
+                    <foreach collection="CHECKSUM._regex" item="item">
+                        AND `CHECKSUM` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="checksum._lt != null">
+                    AND `CHECKSUM` <![CDATA[ < ]]>  #{CHECKSUM._lt}
+                </if>
+                <if test="checksum._le != null">
+                    AND `CHECKSUM` <![CDATA[ <= ]]>  #{{CHECKSUM._lt}
+                </if>
+                <if test="checksum._gt != null">
+                    AND `CHECKSUM` <![CDATA[ > ]]>  #{{CHECKSUM._lt}
+                </if>
+                <if test="checksum._ge != null">
+                    AND `CHECKSUM` <![CDATA[ >= ]]>  #{{CHECKSUM._lt}
+                </if>
+            </if>
+            <if test="createOptions != null">
+                <if test="createOptions._in != null">
+                    AND `CREATE_OPTIONS` in
+                    <foreach collection="CREATE_OPTIONS._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="createOptions._notIn != null">
+                    AND `CREATE_OPTIONS` not in
+                    <foreach collection="CREATE_OPTIONS._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="createOptions._like != null">
+                    <foreach collection="CREATE_OPTIONS._like" item="item">
+                        AND `CREATE_OPTIONS` like #{item}
+                    </foreach>
+                </if>
+                <if test="createOptions._notLike != null">
+                    <foreach collection="CREATE_OPTIONS._notLike" item="item">
+                        AND `CREATE_OPTIONS` not like #{item}
+                    </foreach>
+                </if>
+                <if test="createOptions._regex != null">
+                    <foreach collection="CREATE_OPTIONS._regex" item="item">
+                        AND `CREATE_OPTIONS` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="createOptions._regex != null">
+                    <foreach collection="CREATE_OPTIONS._regex" item="item">
+                        AND `CREATE_OPTIONS` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="createOptions._lt != null">
+                    AND `CREATE_OPTIONS` <![CDATA[ < ]]>  #{CREATE_OPTIONS._lt}
+                </if>
+                <if test="createOptions._le != null">
+                    AND `CREATE_OPTIONS` <![CDATA[ <= ]]>  #{{CREATE_OPTIONS._lt}
+                </if>
+                <if test="createOptions._gt != null">
+                    AND `CREATE_OPTIONS` <![CDATA[ > ]]>  #{{CREATE_OPTIONS._lt}
+                </if>
+                <if test="createOptions._ge != null">
+                    AND `CREATE_OPTIONS` <![CDATA[ >= ]]>  #{{CREATE_OPTIONS._lt}
+                </if>
+            </if>
+            <if test="tableComment != null">
+                <if test="tableComment._in != null">
+                    AND `TABLE_COMMENT` in
+                    <foreach collection="TABLE_COMMENT._in" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableComment._notIn != null">
+                    AND `TABLE_COMMENT` not in
+                    <foreach collection="TABLE_COMMENT._notIn" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="tableComment._like != null">
+                    <foreach collection="TABLE_COMMENT._like" item="item">
+                        AND `TABLE_COMMENT` like #{item}
+                    </foreach>
+                </if>
+                <if test="tableComment._notLike != null">
+                    <foreach collection="TABLE_COMMENT._notLike" item="item">
+                        AND `TABLE_COMMENT` not like #{item}
+                    </foreach>
+                </if>
+                <if test="tableComment._regex != null">
+                    <foreach collection="TABLE_COMMENT._regex" item="item">
+                        AND `TABLE_COMMENT` REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableComment._regex != null">
+                    <foreach collection="TABLE_COMMENT._regex" item="item">
+                        AND `TABLE_COMMENT` not REGEXP #{item}
+                    </foreach>
+                </if>
+                <if test="tableComment._lt != null">
+                    AND `TABLE_COMMENT` <![CDATA[ < ]]>  #{TABLE_COMMENT._lt}
+                </if>
+                <if test="tableComment._le != null">
+                    AND `TABLE_COMMENT` <![CDATA[ <= ]]>  #{{TABLE_COMMENT._lt}
+                </if>
+                <if test="tableComment._gt != null">
+                    AND `TABLE_COMMENT` <![CDATA[ > ]]>  #{{TABLE_COMMENT._lt}
+                </if>
+                <if test="tableComment._ge != null">
+                    AND `TABLE_COMMENT` <![CDATA[ >= ]]>  #{{TABLE_COMMENT._lt}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <update id="updateBase"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.TablesVo">
+        UPDATE `information_schema`.`TABLES`
+        <set>
+            <if test="source.tableCatalog != null">
+                `TABLE_CATALOG` = #{source.tableCatalog},
+            </if>
+            <if test="source.tableSchema != null">
+                `TABLE_SCHEMA` = #{source.tableSchema},
+            </if>
+            <if test="source.tableName != null">
+                `TABLE_NAME` = #{source.tableName},
+            </if>
+            <if test="source.tableType != null">
+                `TABLE_TYPE` = #{source.tableType},
+            </if>
+            <if test="source.engine != null">
+                `ENGINE` = #{source.engine},
+            </if>
+            <if test="source.version != null">
+                `VERSION` = #{source.version},
+            </if>
+            <if test="source.rowFormat != null">
+                `ROW_FORMAT` = #{source.rowFormat},
+            </if>
+            <if test="source.tableRows != null">
+                `TABLE_ROWS` = #{source.tableRows},
+            </if>
+            <if test="source.avgRowLength != null">
+                `AVG_ROW_LENGTH` = #{source.avgRowLength},
+            </if>
+            <if test="source.dataLength != null">
+                `DATA_LENGTH` = #{source.dataLength},
+            </if>
+            <if test="source.maxDataLength != null">
+                `MAX_DATA_LENGTH` = #{source.maxDataLength},
+            </if>
+            <if test="source.indexLength != null">
+                `INDEX_LENGTH` = #{source.indexLength},
+            </if>
+            <if test="source.dataFree != null">
+                `DATA_FREE` = #{source.dataFree},
+            </if>
+            <if test="source.autoIncrement != null">
+                `AUTO_INCREMENT` = #{source.autoIncrement},
+            </if>
+            <if test="source.createTime != null">
+                `CREATE_TIME` = #{source.createTime},
+            </if>
+            <if test="source.updateTime != null">
+                `UPDATE_TIME` = #{source.updateTime},
+            </if>
+            <if test="source.checkTime != null">
+                `CHECK_TIME` = #{source.checkTime},
+            </if>
+            <if test="source.tableCollation != null">
+                `TABLE_COLLATION` = #{source.tableCollation},
+            </if>
+            <if test="source.checksum != null">
+                `CHECKSUM` = #{source.checksum},
+            </if>
+            <if test="source.createOptions != null">
+                `CREATE_OPTIONS` = #{source.createOptions},
+            </if>
+            <if test="source.tableComment != null">
+                `TABLE_COMMENT` = #{source.tableComment}
+            </if>
+        </set>
+        <where>
+            1 =1
+            <if test="target.tableCatalog != null">
+                AND `TABLE_CATALOG` = #{target.tableCatalog}
+            </if>
+            <if test="target.tableSchema != null">
+                AND `TABLE_SCHEMA` = #{target.tableSchema}
+            </if>
+            <if test="target.tableName != null">
+                AND `TABLE_NAME` = #{target.tableName}
+            </if>
+            <if test="target.tableType != null">
+                AND `TABLE_TYPE` = #{target.tableType}
+            </if>
+            <if test="target.engine != null">
+                AND `ENGINE` = #{target.engine}
+            </if>
+            <if test="target.version != null">
+                AND `VERSION` = #{target.version}
+            </if>
+            <if test="target.rowFormat != null">
+                AND `ROW_FORMAT` = #{target.rowFormat}
+            </if>
+            <if test="target.tableRows != null">
+                AND `TABLE_ROWS` = #{target.tableRows}
+            </if>
+            <if test="target.avgRowLength != null">
+                AND `AVG_ROW_LENGTH` = #{target.avgRowLength}
+            </if>
+            <if test="target.dataLength != null">
+                AND `DATA_LENGTH` = #{target.dataLength}
+            </if>
+            <if test="target.maxDataLength != null">
+                AND `MAX_DATA_LENGTH` = #{target.maxDataLength}
+            </if>
+            <if test="target.indexLength != null">
+                AND `INDEX_LENGTH` = #{target.indexLength}
+            </if>
+            <if test="target.dataFree != null">
+                AND `DATA_FREE` = #{target.dataFree}
+            </if>
+            <if test="target.autoIncrement != null">
+                AND `AUTO_INCREMENT` = #{target.autoIncrement}
+            </if>
+            <if test="target.createTime != null">
+                AND `CREATE_TIME` = #{target.createTime}
+            </if>
+            <if test="target.updateTime != null">
+                AND `UPDATE_TIME` = #{target.updateTime}
+            </if>
+            <if test="target.checkTime != null">
+                AND `CHECK_TIME` = #{target.checkTime}
+            </if>
+            <if test="target.tableCollation != null">
+                AND `TABLE_COLLATION` = #{target.tableCollation}
+            </if>
+            <if test="target.checksum != null">
+                AND `CHECKSUM` = #{target.checksum}
+            </if>
+            <if test="target.createOptions != null">
+                AND `CREATE_OPTIONS` = #{target.createOptions}
+            </if>
+            <if test="target.tableComment != null">
+                AND `TABLE_COMMENT` = #{target.tableComment}
+            </if>
+        </where>
+    </update>
+
+    <update id="updateBaseIncludeNull"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.TablesVo">
+        UPDATE `information_schema`.`TABLES`
+        <set>
+            `TABLE_CATALOG` = #{source.tableCatalog},
+            `TABLE_SCHEMA` = #{source.tableSchema},
+            `TABLE_NAME` = #{source.tableName},
+            `TABLE_TYPE` = #{source.tableType},
+            `ENGINE` = #{source.engine},
+            `VERSION` = #{source.version},
+            `ROW_FORMAT` = #{source.rowFormat},
+            `TABLE_ROWS` = #{source.tableRows},
+            `AVG_ROW_LENGTH` = #{source.avgRowLength},
+            `DATA_LENGTH` = #{source.dataLength},
+            `MAX_DATA_LENGTH` = #{source.maxDataLength},
+            `INDEX_LENGTH` = #{source.indexLength},
+            `DATA_FREE` = #{source.dataFree},
+            `AUTO_INCREMENT` = #{source.autoIncrement},
+            `CREATE_TIME` = #{source.createTime},
+            `UPDATE_TIME` = #{source.updateTime},
+            `CHECK_TIME` = #{source.checkTime},
+            `TABLE_COLLATION` = #{source.tableCollation},
+            `CHECKSUM` = #{source.checksum},
+            `CREATE_OPTIONS` = #{source.createOptions},
+            `TABLE_COMMENT` = #{source.tableComment}
+        </set>
+        <where>
+            1 =1
+            <if test="target.tableCatalog != null">
+                AND `TABLE_CATALOG` = #{target.tableCatalog}
+            </if>
+            <if test="target.tableSchema != null">
+                AND `TABLE_SCHEMA` = #{target.tableSchema}
+            </if>
+            <if test="target.tableName != null">
+                AND `TABLE_NAME` = #{target.tableName}
+            </if>
+            <if test="target.tableType != null">
+                AND `TABLE_TYPE` = #{target.tableType}
+            </if>
+            <if test="target.engine != null">
+                AND `ENGINE` = #{target.engine}
+            </if>
+            <if test="target.version != null">
+                AND `VERSION` = #{target.version}
+            </if>
+            <if test="target.rowFormat != null">
+                AND `ROW_FORMAT` = #{target.rowFormat}
+            </if>
+            <if test="target.tableRows != null">
+                AND `TABLE_ROWS` = #{target.tableRows}
+            </if>
+            <if test="target.avgRowLength != null">
+                AND `AVG_ROW_LENGTH` = #{target.avgRowLength}
+            </if>
+            <if test="target.dataLength != null">
+                AND `DATA_LENGTH` = #{target.dataLength}
+            </if>
+            <if test="target.maxDataLength != null">
+                AND `MAX_DATA_LENGTH` = #{target.maxDataLength}
+            </if>
+            <if test="target.indexLength != null">
+                AND `INDEX_LENGTH` = #{target.indexLength}
+            </if>
+            <if test="target.dataFree != null">
+                AND `DATA_FREE` = #{target.dataFree}
+            </if>
+            <if test="target.autoIncrement != null">
+                AND `AUTO_INCREMENT` = #{target.autoIncrement}
+            </if>
+            <if test="target.createTime != null">
+                AND `CREATE_TIME` = #{target.createTime}
+            </if>
+            <if test="target.updateTime != null">
+                AND `UPDATE_TIME` = #{target.updateTime}
+            </if>
+            <if test="target.checkTime != null">
+                AND `CHECK_TIME` = #{target.checkTime}
+            </if>
+            <if test="target.tableCollation != null">
+                AND `TABLE_COLLATION` = #{target.tableCollation}
+            </if>
+            <if test="target.checksum != null">
+                AND `CHECKSUM` = #{target.checksum}
+            </if>
+            <if test="target.createOptions != null">
+                AND `CREATE_OPTIONS` = #{target.createOptions}
+            </if>
+            <if test="target.tableComment != null">
+                AND `TABLE_COMMENT` = #{target.tableComment}
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteBase"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.TablesVo">
+        DELETE FROM `information_schema`.`TABLES`
+        <where>
+            1 =1
+            <if test="tableCatalog != null">
+                AND `TABLE_CATALOG` = #{tableCatalog}
+            </if>
+            <if test="tableSchema != null">
+                AND `TABLE_SCHEMA` = #{tableSchema}
+            </if>
+            <if test="tableName != null">
+                AND `TABLE_NAME` = #{tableName}
+            </if>
+            <if test="tableType != null">
+                AND `TABLE_TYPE` = #{tableType}
+            </if>
+            <if test="engine != null">
+                AND `ENGINE` = #{engine}
+            </if>
+            <if test="version != null">
+                AND `VERSION` = #{version}
+            </if>
+            <if test="rowFormat != null">
+                AND `ROW_FORMAT` = #{rowFormat}
+            </if>
+            <if test="tableRows != null">
+                AND `TABLE_ROWS` = #{tableRows}
+            </if>
+            <if test="avgRowLength != null">
+                AND `AVG_ROW_LENGTH` = #{avgRowLength}
+            </if>
+            <if test="dataLength != null">
+                AND `DATA_LENGTH` = #{dataLength}
+            </if>
+            <if test="maxDataLength != null">
+                AND `MAX_DATA_LENGTH` = #{maxDataLength}
+            </if>
+            <if test="indexLength != null">
+                AND `INDEX_LENGTH` = #{indexLength}
+            </if>
+            <if test="dataFree != null">
+                AND `DATA_FREE` = #{dataFree}
+            </if>
+            <if test="autoIncrement != null">
+                AND `AUTO_INCREMENT` = #{autoIncrement}
+            </if>
+            <if test="createTime != null">
+                AND `CREATE_TIME` = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                AND `UPDATE_TIME` = #{updateTime}
+            </if>
+            <if test="checkTime != null">
+                AND `CHECK_TIME` = #{checkTime}
+            </if>
+            <if test="tableCollation != null">
+                AND `TABLE_COLLATION` = #{tableCollation}
+            </if>
+            <if test="checksum != null">
+                AND `CHECKSUM` = #{checksum}
+            </if>
+            <if test="createOptions != null">
+                AND `CREATE_OPTIONS` = #{createOptions}
+            </if>
+            <if test="tableComment != null">
+                AND `TABLE_COMMENT` = #{tableComment}
+            </if>
+        </where>
+    </delete>
+
+
+</mapper>

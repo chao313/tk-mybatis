@@ -1,0 +1,74 @@
+## dev环境使用是配置
+server:
+  port: 8088
+  context-path: /
+#  ssl:
+#    key-store: classpath:.keystore_RSA
+#    key-store-password: 111111
+#    key-password: 111111
+#    key-alias: tomcat
+
+
+
+spring:
+  mvc:
+    favicon:
+      enabled: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: utf-8
+    content-type: text/html
+    mode: HTML5
+    cache: false
+  freemarker:
+    charset: UTF-8
+    content-type: text/html
+    cache: false
+    suffix: .html
+  #  datasource:
+  #      driver-class-name: com.mysql.jdbc.Driver
+  #      url: jdbc:mysql://10.200.127.56:3306?useUnicode=true&characterEncoding=utf8
+  #      username: devsw
+  #      password: devsw
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/j2eedb?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+  #  datasource:
+  #    driver-class-name: com.mysql.jdbc.Driver
+  #    url: jdbc:mysql://172.17.0.1:3306?useUnicode=true&characterEncoding=utf8
+  #    username: root
+  #    password: 123456
+
+  #  @MapperScan(value = "demo.spring.boot.demospringboot.mybatis.mapper")
+  #mybatis:
+  #  mapper-locations: classpath:mybatis/mapper/*Mapper.xml,classpath*:demomaster/mapper/*Mapper.xml
+  #  config-location: classpath:mybatis/config/mybatis-config.xml
+
+  ##静态资源
+resources:
+  ##静态资源
+  ## -- 如果不配置，都可以访问
+  ## -- 如果配置，都可以只能访问指定路径下的
+  ## http://localhost:8081/chao/static.txt
+  ## http://localhost:8081/chao/public.txt
+  static-locations: classpath:/static/,classpath:/public/
+
+management:
+  shell:
+    auth:
+      simple:
+        user:
+          name: root
+          password: root
+    ssh:
+      port: 2001
+  health:
+    redis:
+      enabled: false
+  security:
+    enabled: false
+
+

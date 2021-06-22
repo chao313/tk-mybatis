@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="demo.spring.boot.demospringboot.mybatis.dao.SchemataDAO">
+
+    <resultMap id="resultMap" type="demo.spring.boot.demospringboot.mybatis.vo.SchemataVo">
+        <result column="CATALOG_NAME" property="catalogName"/>
+        <result column="SCHEMA_NAME" property="schemaName"/>
+        <result column="DEFAULT_CHARACTER_SET_NAME" property="defaultCharacterSetName"/>
+        <result column="DEFAULT_COLLATION_NAME" property="defaultCollationName"/>
+        <result column="SQL_PATH" property="sqlPath"/>
+    </resultMap>
+
+    <insert id="insert"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.SchemataVo">
+        INSERT INTO `information_schema`.`SCHEMATA`(
+        `CATALOG_NAME` ,
+        `SCHEMA_NAME` ,
+        `DEFAULT_CHARACTER_SET_NAME` ,
+        `DEFAULT_COLLATION_NAME` ,
+        `SQL_PATH` 
+        )VALUE(
+          #{catalogName}  ,
+          #{schemaName}  ,
+          #{defaultCharacterSetName}  ,
+          #{defaultCollationName}  ,
+          #{sqlPath}  
+        )
+    </insert>
+
+    <insert id="inserts"
+            parameterType="java.util.List">
+        INSERT INTO `information_schema`.`SCHEMATA`(
+        `CATALOG_NAME`,
+        `SCHEMA_NAME`,
+        `DEFAULT_CHARACTER_SET_NAME`,
+        `DEFAULT_COLLATION_NAME`,
+        `SQL_PATH`
+        )VALUES
+        <foreach collection="vos" item="item" separator=",">
+            (
+            #{item.catalogName},
+            #{item.schemaName},
+            #{item.defaultCharacterSetName},
+            #{item.defaultCollationName},
+            #{item.sqlPath}
+            )
+        </foreach>
+    </insert>
+
+    <select id="queryBase" resultMap="resultMap"
+            resultType="demo.spring.boot.demospringboot.mybatis.vo.SchemataVo"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.SchemataVo">
+        SELECT
+        `CATALOG_NAME`,
+        `SCHEMA_NAME`,
+        `DEFAULT_CHARACTER_SET_NAME`,
+        `DEFAULT_COLLATION_NAME`,
+        `SQL_PATH`
+        FROM `information_schema`.`SCHEMATA`
+        <where>
+            1 = 1
+            <if test="catalogName != null">
+                AND `CATALOG_NAME` = #{catalogName}
+            </if>
+            <if test="schemaName != null">
+                AND `SCHEMA_NAME` = #{schemaName}
+            </if>
+            <if test="defaultCharacterSetName != null">
+                AND `DEFAULT_CHARACTER_SET_NAME` = #{defaultCharacterSetName}
+            </if>
+            <if test="defaultCollationName != null">
+                AND `DEFAULT_COLLATION_NAME` = #{defaultCollationName}
+            </if>
+            <if test="sqlPath != null">
+                AND `SQL_PATH` = #{sqlPath}
+            </if>
+        </where>
+    </select>
+
+     <select id="queryMultiTerm" resultMap="resultMap"
+             resultType="demo.spring.boot.demospringboot.mybatis.vo.SchemataVo"
+             parameterType="demo.spring.boot.demospringboot.mybatis.vo.SchemataMultiTermVo">
+        SELECT
+        `CATALOG_NAME`,
+        `SCHEMA_NAME`,
+        `DEFAULT_CHARACTER_SET_NAME`,
+        `DEFAULT_COLLATION_NAME`,
+        `SQL_PATH`
+        FROM `information_schema`.`SCHEMATA`
+        <where>
+            1 = 1
+            <if test="catalogName != null">
+                 <if test="catalogName._in != null">
+                     AND `CATALOG_NAME` in
+                     <foreach collection="CATALOG_NAME._in" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="catalogName._notIn != null">
+                     AND `CATALOG_NAME`  not in
+                     <foreach collection="CATALOG_NAME._notIn" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="catalogName._like != null">
+                     <foreach collection="CATALOG_NAME._like" item="item">
+                       AND `CATALOG_NAME` like #{item}
+                     </foreach>
+                 </if>
+                 <if test="catalogName._notLike != null">
+                     <foreach collection="CATALOG_NAME._notLike" item="item">
+                       AND `CATALOG_NAME` not like #{item}
+                     </foreach>
+                 </if>
+                 <if test="catalogName._regex != null">
+                     <foreach collection="CATALOG_NAME._regex" item="item">
+                       AND `CATALOG_NAME` REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="catalogName._regex != null">
+                     <foreach collection="CATALOG_NAME._regex" item="item">
+                       AND `CATALOG_NAME` not REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="catalogName._lt != null">
+                      AND `CATALOG_NAME` <![CDATA[ < ]]>  #{CATALOG_NAME._lt}
+                 </if>
+                  <if test="catalogName._le != null">
+                      AND `CATALOG_NAME` <![CDATA[ <= ]]>  #{{CATALOG_NAME._lt}
+                 </if>
+                  <if test="catalogName._gt != null">
+                      AND `CATALOG_NAME` <![CDATA[ > ]]>  #{{CATALOG_NAME._lt}
+                 </if>
+                  <if test="catalogName._ge != null">
+                      AND `CATALOG_NAME` <![CDATA[ >= ]]>  #{{CATALOG_NAME._lt}
+                 </if>
+            </if>
+            <if test="schemaName != null">
+                 <if test="schemaName._in != null">
+                     AND `SCHEMA_NAME` in
+                     <foreach collection="SCHEMA_NAME._in" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="schemaName._notIn != null">
+                     AND `SCHEMA_NAME`  not in
+                     <foreach collection="SCHEMA_NAME._notIn" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="schemaName._like != null">
+                     <foreach collection="SCHEMA_NAME._like" item="item">
+                       AND `SCHEMA_NAME` like #{item}
+                     </foreach>
+                 </if>
+                 <if test="schemaName._notLike != null">
+                     <foreach collection="SCHEMA_NAME._notLike" item="item">
+                       AND `SCHEMA_NAME` not like #{item}
+                     </foreach>
+                 </if>
+                 <if test="schemaName._regex != null">
+                     <foreach collection="SCHEMA_NAME._regex" item="item">
+                       AND `SCHEMA_NAME` REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="schemaName._regex != null">
+                     <foreach collection="SCHEMA_NAME._regex" item="item">
+                       AND `SCHEMA_NAME` not REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="schemaName._lt != null">
+                      AND `SCHEMA_NAME` <![CDATA[ < ]]>  #{SCHEMA_NAME._lt}
+                 </if>
+                  <if test="schemaName._le != null">
+                      AND `SCHEMA_NAME` <![CDATA[ <= ]]>  #{{SCHEMA_NAME._lt}
+                 </if>
+                  <if test="schemaName._gt != null">
+                      AND `SCHEMA_NAME` <![CDATA[ > ]]>  #{{SCHEMA_NAME._lt}
+                 </if>
+                  <if test="schemaName._ge != null">
+                      AND `SCHEMA_NAME` <![CDATA[ >= ]]>  #{{SCHEMA_NAME._lt}
+                 </if>
+            </if>
+            <if test="defaultCharacterSetName != null">
+                 <if test="defaultCharacterSetName._in != null">
+                     AND `DEFAULT_CHARACTER_SET_NAME` in
+                     <foreach collection="DEFAULT_CHARACTER_SET_NAME._in" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCharacterSetName._notIn != null">
+                     AND `DEFAULT_CHARACTER_SET_NAME`  not in
+                     <foreach collection="DEFAULT_CHARACTER_SET_NAME._notIn" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCharacterSetName._like != null">
+                     <foreach collection="DEFAULT_CHARACTER_SET_NAME._like" item="item">
+                       AND `DEFAULT_CHARACTER_SET_NAME` like #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCharacterSetName._notLike != null">
+                     <foreach collection="DEFAULT_CHARACTER_SET_NAME._notLike" item="item">
+                       AND `DEFAULT_CHARACTER_SET_NAME` not like #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCharacterSetName._regex != null">
+                     <foreach collection="DEFAULT_CHARACTER_SET_NAME._regex" item="item">
+                       AND `DEFAULT_CHARACTER_SET_NAME` REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCharacterSetName._regex != null">
+                     <foreach collection="DEFAULT_CHARACTER_SET_NAME._regex" item="item">
+                       AND `DEFAULT_CHARACTER_SET_NAME` not REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCharacterSetName._lt != null">
+                      AND `DEFAULT_CHARACTER_SET_NAME` <![CDATA[ < ]]>  #{DEFAULT_CHARACTER_SET_NAME._lt}
+                 </if>
+                  <if test="defaultCharacterSetName._le != null">
+                      AND `DEFAULT_CHARACTER_SET_NAME` <![CDATA[ <= ]]>  #{{DEFAULT_CHARACTER_SET_NAME._lt}
+                 </if>
+                  <if test="defaultCharacterSetName._gt != null">
+                      AND `DEFAULT_CHARACTER_SET_NAME` <![CDATA[ > ]]>  #{{DEFAULT_CHARACTER_SET_NAME._lt}
+                 </if>
+                  <if test="defaultCharacterSetName._ge != null">
+                      AND `DEFAULT_CHARACTER_SET_NAME` <![CDATA[ >= ]]>  #{{DEFAULT_CHARACTER_SET_NAME._lt}
+                 </if>
+            </if>
+            <if test="defaultCollationName != null">
+                 <if test="defaultCollationName._in != null">
+                     AND `DEFAULT_COLLATION_NAME` in
+                     <foreach collection="DEFAULT_COLLATION_NAME._in" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCollationName._notIn != null">
+                     AND `DEFAULT_COLLATION_NAME`  not in
+                     <foreach collection="DEFAULT_COLLATION_NAME._notIn" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCollationName._like != null">
+                     <foreach collection="DEFAULT_COLLATION_NAME._like" item="item">
+                       AND `DEFAULT_COLLATION_NAME` like #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCollationName._notLike != null">
+                     <foreach collection="DEFAULT_COLLATION_NAME._notLike" item="item">
+                       AND `DEFAULT_COLLATION_NAME` not like #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCollationName._regex != null">
+                     <foreach collection="DEFAULT_COLLATION_NAME._regex" item="item">
+                       AND `DEFAULT_COLLATION_NAME` REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCollationName._regex != null">
+                     <foreach collection="DEFAULT_COLLATION_NAME._regex" item="item">
+                       AND `DEFAULT_COLLATION_NAME` not REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="defaultCollationName._lt != null">
+                      AND `DEFAULT_COLLATION_NAME` <![CDATA[ < ]]>  #{DEFAULT_COLLATION_NAME._lt}
+                 </if>
+                  <if test="defaultCollationName._le != null">
+                      AND `DEFAULT_COLLATION_NAME` <![CDATA[ <= ]]>  #{{DEFAULT_COLLATION_NAME._lt}
+                 </if>
+                  <if test="defaultCollationName._gt != null">
+                      AND `DEFAULT_COLLATION_NAME` <![CDATA[ > ]]>  #{{DEFAULT_COLLATION_NAME._lt}
+                 </if>
+                  <if test="defaultCollationName._ge != null">
+                      AND `DEFAULT_COLLATION_NAME` <![CDATA[ >= ]]>  #{{DEFAULT_COLLATION_NAME._lt}
+                 </if>
+            </if>
+            <if test="sqlPath != null">
+                 <if test="sqlPath._in != null">
+                     AND `SQL_PATH` in
+                     <foreach collection="SQL_PATH._in" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="sqlPath._notIn != null">
+                     AND `SQL_PATH`  not in
+                     <foreach collection="SQL_PATH._notIn" item="item" separator="," open="(" close=")">
+                         #{item}
+                     </foreach>
+                 </if>
+                 <if test="sqlPath._like != null">
+                     <foreach collection="SQL_PATH._like" item="item">
+                       AND `SQL_PATH` like #{item}
+                     </foreach>
+                 </if>
+                 <if test="sqlPath._notLike != null">
+                     <foreach collection="SQL_PATH._notLike" item="item">
+                       AND `SQL_PATH` not like #{item}
+                     </foreach>
+                 </if>
+                 <if test="sqlPath._regex != null">
+                     <foreach collection="SQL_PATH._regex" item="item">
+                       AND `SQL_PATH` REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="sqlPath._regex != null">
+                     <foreach collection="SQL_PATH._regex" item="item">
+                       AND `SQL_PATH` not REGEXP #{item}
+                     </foreach>
+                 </if>
+                 <if test="sqlPath._lt != null">
+                      AND `SQL_PATH` <![CDATA[ < ]]>  #{SQL_PATH._lt}
+                 </if>
+                  <if test="sqlPath._le != null">
+                      AND `SQL_PATH` <![CDATA[ <= ]]>  #{{SQL_PATH._lt}
+                 </if>
+                  <if test="sqlPath._gt != null">
+                      AND `SQL_PATH` <![CDATA[ > ]]>  #{{SQL_PATH._lt}
+                 </if>
+                  <if test="sqlPath._ge != null">
+                      AND `SQL_PATH` <![CDATA[ >= ]]>  #{{SQL_PATH._lt}
+                 </if>
+            </if>
+        </where>
+        </select>
+
+    <update id="updateBase"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.SchemataVo">
+        UPDATE `information_schema`.`SCHEMATA`
+        <set>
+            <if test="source.catalogName != null">
+                `CATALOG_NAME` = #{source.catalogName},
+            </if>
+            <if test="source.schemaName != null">
+                `SCHEMA_NAME` = #{source.schemaName},
+            </if>
+            <if test="source.defaultCharacterSetName != null">
+                `DEFAULT_CHARACTER_SET_NAME` = #{source.defaultCharacterSetName},
+            </if>
+            <if test="source.defaultCollationName != null">
+                `DEFAULT_COLLATION_NAME` = #{source.defaultCollationName},
+            </if>
+            <if test="source.sqlPath != null">
+                `SQL_PATH` = #{source.sqlPath}
+            </if>
+        </set>
+        <where>
+            1 =1
+            <if test="target.catalogName != null">
+                AND `CATALOG_NAME` = #{target.catalogName}
+            </if>
+            <if test="target.schemaName != null">
+                AND `SCHEMA_NAME` = #{target.schemaName}
+            </if>
+            <if test="target.defaultCharacterSetName != null">
+                AND `DEFAULT_CHARACTER_SET_NAME` = #{target.defaultCharacterSetName}
+            </if>
+            <if test="target.defaultCollationName != null">
+                AND `DEFAULT_COLLATION_NAME` = #{target.defaultCollationName}
+            </if>
+            <if test="target.sqlPath != null">
+                AND `SQL_PATH` = #{target.sqlPath}
+            </if>
+        </where>
+    </update>
+
+    <update id="updateBaseIncludeNull"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.SchemataVo">
+        UPDATE `information_schema`.`SCHEMATA`
+        <set>
+            `CATALOG_NAME` = #{source.catalogName},
+            `SCHEMA_NAME` = #{source.schemaName},
+            `DEFAULT_CHARACTER_SET_NAME` = #{source.defaultCharacterSetName},
+            `DEFAULT_COLLATION_NAME` = #{source.defaultCollationName},
+            `SQL_PATH` = #{source.sqlPath}
+        </set>
+        <where>
+            1 =1
+            <if test="target.catalogName != null">
+                AND `CATALOG_NAME` = #{target.catalogName}
+            </if>
+            <if test="target.schemaName != null">
+                AND `SCHEMA_NAME` = #{target.schemaName}
+            </if>
+            <if test="target.defaultCharacterSetName != null">
+                AND `DEFAULT_CHARACTER_SET_NAME` = #{target.defaultCharacterSetName}
+            </if>
+            <if test="target.defaultCollationName != null">
+                AND `DEFAULT_COLLATION_NAME` = #{target.defaultCollationName}
+            </if>
+            <if test="target.sqlPath != null">
+                AND `SQL_PATH` = #{target.sqlPath}
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteBase"
+            parameterType="demo.spring.boot.demospringboot.mybatis.vo.SchemataVo">
+        DELETE FROM `information_schema`.`SCHEMATA`
+        <where>
+            1 =1
+            <if test="catalogName != null">
+                AND `CATALOG_NAME` = #{catalogName}
+            </if>
+            <if test="schemaName != null">
+                AND `SCHEMA_NAME` = #{schemaName}
+            </if>
+            <if test="defaultCharacterSetName != null">
+                AND `DEFAULT_CHARACTER_SET_NAME` = #{defaultCharacterSetName}
+            </if>
+            <if test="defaultCollationName != null">
+                AND `DEFAULT_COLLATION_NAME` = #{defaultCollationName}
+            </if>
+            <if test="sqlPath != null">
+                AND `SQL_PATH` = #{sqlPath}
+            </if>
+        </where>
+    </delete>
+
+
+</mapper>

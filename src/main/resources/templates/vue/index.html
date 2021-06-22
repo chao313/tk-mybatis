@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<style>
+    .add_img {
+        width: 30px;
+    }
+
+    .del_img {
+        width: 30px;
+    }
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Mysql 管理</title>
+    <link href="../bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="body">
+    <div>
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{{chooseDataBaseTxt}}</label>
+                <div class="col-sm-4">
+                    <select class="form-control" @change="selectDatabase">
+                        <!--默认显示但是无法选择-->
+                        <option disabled selected hidden>{{chooseDataBasePlaceholder}}
+                        </option>
+                        <option v-for="item in dataBases" v-bind:value="item.schemaName">{{item.schemaName}}</option>
+                    </select>
+                </div>
+            </div>
+            <!--主表-->
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{{chooseTableTxt}}</label>
+                <div class="col-sm-4">
+                    <select class="form-control" @change="selectTable">
+                        <option disabled selected hidden>{{chooseTablePlaceholder}}
+                        </option>
+                        <option v-for="item in tables" v-bind:value="item.tableName">{{item.tableName}}</option>
+                    </select>
+                </div>
+            </div>
+            <!--package-->
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{{packageTxt}}</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" v-model="packageValue"
+                           v-bind:placeholder="packagePlaceholder">
+                </div>
+            </div>
+            <!--添加关联按钮-->
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <label class="col-sm-12 control-label"><img src="../+.png" class="add_img"
+                                                                v-on:click="addAssociation"/></label>
+                </div>
+                <div class="col-sm-4">
+                    <label class="col-sm-12 control-label"><img src="../-.png" class="del_img"
+                                                                v-on:click="delAssociation"/></label>
+                </div>
+            </div>
+            <!--关联操作-->
+            <div class="form-group" v-if="chooseAssociation.length>0" v-for="(itemTmp,index) in chooseAssociation">
+                <label class="col-sm-2 control-label">{{chooseAssociationTxt}}</label>
+                <div class="col-sm-2">
+                    <select class="form-control" @change="chooseAssociationLeftTableFunction"
+                            v-bind:data-index="index+1">
+                        <option disabled selected hidden>{{chooseAssociationLeftTablePlaceholder}}
+                        </option>
+                        <option v-for="item in chooseAssociationLeftTable[index+1]" v-bind:value="item.tableName">
+                            {{item.tableName}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control" @change="selectAssociationLeftFieldFunction"
+                            v-bind:data-index="index+1">
+                        <option disabled selected hidden>{{chooseAssociationLeftFieldPlaceholder}}
+                        </option>
+                        <option v-for="item in chooseAssociationLeftField[index+1]" v-bind:value="item.columnName">
+                            {{item.columnName}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control" @change="selectAssociationRightTableFunction"
+                            v-bind:data-index="index+1">
+                        <option disabled selected hidden>{{chooseAssociationRightTablePlaceholder}}
+                        </option>
+                        <option v-for="item in chooseAssociationRightTable[index+1]" v-bind:value="item.tableName">
+                            {{item.tableName}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control" @change="selectAssociationRightFieldFunction"
+                            v-bind:data-index="index+1">
+                        <option disabled selected hidden>{{chooseAssociationRightFieldPlaceholder}}
+                        </option>
+                        <option v-for="item in chooseAssociationRightField[index+1]" v-bind:value="item.columnName">
+                            {{item.columnName}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group sub">
+                <div class="col-sm-8 control-label" v-if="chooseAssociation.length==0">
+                    <button type="button" class="btn btn-primary" v-on:click="generate"
+                            v-bind:disabled="saveDisabled">生成主表
+                    </button>
+                    <button type="button" class="btn btn-primary" v-on:click="download"
+                            v-bind:disabled="saveDisabled">下载主表
+                    </button>
+                </div>
+                <div class="col-sm-8 control-label" v-if="chooseAssociation.length>0">
+                    <button type="button" class="btn btn-primary" v-on:click="generateAssociation"
+                            v-bind:disabled="saveDisabled">生成关联表
+                    </button>
+                    <button type="button" class="btn btn-primary" v-on:click="downloadAssociation"
+                            v-bind:disabled="saveDisabled">下载关联表
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <div>
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{voTxt}}</label>
+                    <div class="col-sm-8">
+                        <code>
+                            <pre>{{voValue}}</pre>
+                        </code>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{DaoTxt}}</label>
+                    <div class="col-sm-8">
+                        <code>
+                            <pre>{{DaoValue}}</pre>
+                        </code>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ServiceTxt}}</label>
+                    <div class="col-sm-8">
+                        <code>
+                            <pre>{{ServiceValue}}</pre>
+                        </code>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ServiceImplTxt}}</label>
+                    <div class="col-sm-8">
+                        <code>
+                            <pre>{{ServiceImplValue}}</pre>
+                        </code>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{MapperTxt}}</label>
+                    <div class="col-sm-8">
+                        <code>
+                            <pre>{{MapperValue}}</pre>
+                        </code>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="../vue.min.js"></script>
+<script src="../vue-resource.js"></script>
+<script src="../jquery.js"></script>
+<script src="../conf.js"></script>
+<script>
+    var vue = new Vue({
+        el: "#body",
+        data: {
+
+            chooseDataBaseTxt: "数据库",
+            chooseDataBasePlaceholder: "请选择数据库",
+            dataBases: [],
+            chooseDataBaseValue: "",
+
+            chooseTableTxt: "数据表",
+            chooseTablePlaceholder: "请选择数据表",
+            tables: [],
+            chooseTableValue: "",
+
+            chooseAssociationTxt: "添加关联",
+            chooseAssociationLeftTablePlaceholder: "添加关联左表",
+            chooseAssociationLeftFieldPlaceholder: "添加关联左字段",
+            chooseAssociationRightTablePlaceholder: "添加关联右表",
+            chooseAssociationRightFieldPlaceholder: "添加关联右字段",
+
+            chooseAssociation: [],//用来显示数量
+            chooseAssociationLeftTable: [[]],//记录可选关联的左表
+            chooseAssociationLeftField: [[]],//记录关联的左字段
+            chooseAssociationRightTable: [[]],//记录关联的右表
+            chooseAssociationRightField: [[]],//记录关联的右字段
+            chooseAssociationI: 0,       //记录循环的次数
+
+            hasChooseAssociationLeftTable: [],//记录已选关联的左表
+            hasChooseAssociationLeftField: [],//记录已选关联的左字段
+            hasChooseAssociationRightTable: [],//记录已选关联的右表
+            hasChooseAssociationRightField: [],//记录已选关联的右字段
+
+
+            chooseColumnTxt: "字段",
+            chooseColumnPlaceholder: "请选择字段",
+            columns: [],
+            chooseColumnValue: "",
+
+            chooseTableAssociationTxt: "关联数据表",
+            chooseTableAssociationPlaceholder: "请选择关联数据表",
+            tablesAssociation: [],
+            chooseTableAssociationValue: "",
+
+            chooseColumnAssociationTxt: "关联字段",
+            chooseColumnAssociationPlaceholder: "请选择关联字段",
+            columnsAssociation: [],
+            chooseColumnAssociationValue: "",
+
+
+            packageTxt: "package",
+            packagePlaceholder: "请输入package, eg. demo.xx",
+            packageValue: "",
+
+            voTxt: "Vo",
+            voValue: "",
+            DaoTxt: "Dao",
+            DaoValue: "",
+            ServiceTxt: "Service",
+            ServiceValue: "",
+            ServiceImplTxt: "ServiceImpl",
+            ServiceImplValue: "",
+            MapperTxt: "Mapper",
+            MapperValue: "",
+
+            saveSuccess: "保存成功",
+            connectSuccess: "连接成功",
+            alertErrorValue: "系统错误，请联系管理员！",
+            alertParamMiss: "请完善参数",
+
+            saveDisabled: false
+        },
+        methods: {
+            init: function () {
+                //初始化数据库选项
+                this.$http.get(host + '/mybatis/getAllDB')
+                    .then(
+                        function success(res) {
+                            var data = res.body;
+                            if (data.code == 0) {
+                                if (data.content != null) {
+                                    this.dataBases = data.content;
+                                } else {
+                                    alert(data.msg);
+                                }
+                            } else {
+                                alert(this.alertErrorValue)
+                            }
+                        }
+                    );
+            }, selectDatabase: function (ele) {
+                //当选择数据库时
+                // console.log(ele);
+                this.chooseDataBaseValue = ele.target.value;
+                //调用获取tables的函数
+                this.getAllTablesByDB();
+
+            }, getAllTablesByDB: function () {
+                //选择数据库选项后初始化tables
+                this.$http.get(host + '/mybatis/getAllTablesByDB?dataBase=' + this.chooseDataBaseValue)
+                    .then(
+                        function success(res) {
+                            var data = res.body;
+                            if (data.code == 0) {
+                                if (data.content != null) {
+                                    this.tables = data.content;
+                                    this.tablesAssociation = data.content;//目前只支持同库
+                                } else {
+                                    alert(data.msg);
+                                }
+                            } else {
+                                alert(this.alertErrorValue)
+                            }
+                        }
+                    );
+            }, selectTable: function (ele) {
+                //当选择数据库时
+                // console.log(ele);
+                this.chooseTableValue = ele.target.value;
+                //调用获取tables的函数
+                this.getAllColumns();
+
+
+            }, getAllColumns: function () {
+                //选择数据库选项后初始化tables
+                this.$http.get(host + '/mybatis/getAllColumns?dataBase='
+                    + this.chooseDataBaseValue + '&tableName=' + this.chooseTableValue)
+                    .then(
+                        function success(res) {
+                            var data = res.body;
+                            if (data.code == 0) {
+                                if (data.content != null) {
+                                    this.columns = data.content;
+                                } else {
+                                    alert(data.msg);
+                                }
+                            } else {
+                                alert(this.alertErrorValue)
+                            }
+                        }
+                    );
+                this.initAssociationInfo();
+
+            }, selectAssociationTable: function (ele) {
+                //当选择关联数据库时
+                // console.log(ele);
+                this.chooseTableAssociationValue = ele.target.value;
+                //调用获取tables的函数
+                this.getAllAssociationColumns();
+
+            }, getAllAssociationColumns: function () {
+                //选择数据库选项后初始化tables
+                this.$http.get(host + '/mybatis/getAllColumns?dataBase='
+                    + this.chooseDataBaseValue + '&tableName=' + this.chooseTableValue)
+                    .then(
+                        function success(res) {
+                            var data = res.body;
+                            if (data.code == 0) {
+                                if (data.content != null) {
+                                    this.columnsAssociation = data.content;
+                                } else {
+                                    alert(data.msg);
+                                }
+                            } else {
+                                alert(this.alertErrorValue)
+                            }
+                        }
+                    );
+            }, generate: function () {
+                //选择数据库选项后初始化tables
+                this.$http.get(host + '/generate/generateFile',
+                    {
+                        params: {
+                            dataBase: this.chooseDataBaseValue,
+                            ptableName: this.chooseTableValue,
+                            basePackage: this.packageValue
+                        }
+                    })
+                    .then(
+                        function success(res) {
+                            var data = res.body;
+                            if (data.code == 0) {
+                                if (data.content != null) {
+                                    // this.columns = data.content;
+                                    this.voValue = data.content.classVoStr;
+                                    this.DaoValue = data.content.classDaoStr;
+                                    this.ServiceValue = data.content.classServiceStr;
+                                    this.ServiceImplValue = data.content.classServiceImplStr;
+                                    this.MapperValue = data.content.mapperStr;
+                                } else {
+                                    alert(data.msg);
+                                }
+                            } else {
+                                alert(data.msg)
+                            }
+                        }
+                    );
+            }, download: function () {
+                //选择数据库选项后初始化tables
+                var downloadUrl = host + '/generate/download?'
+                    + 'dataBase=' + this.chooseDataBaseValue
+                    + '&ptableName=' + this.chooseTableValue
+                    + '&basePackage=' + this.packageValue;
+                window.open(downloadUrl);
+
+            }, generateAssociation: function () {
+                //选择数据库选项后初始化tables
+                this.$http.post(host + '/generateAssociation/generateFile',
+                    {
+                        "dataBase": this.chooseDataBaseValue,
+                        "basePackage": this.packageValue,
+                        "tableBase": this.chooseTableValue,
+                        "hasChooseAssociationLeftTable": this.hasChooseAssociationLeftTable,
+                        "hasChooseAssociationLeftField": this.hasChooseAssociationLeftField,
+                        "hasChooseAssociationRightTable": this.hasChooseAssociationRightTable,
+                        "hasChooseAssociationRightField": this.hasChooseAssociationRightField
+                    }, {emulateJSON: true})
+                    .then(
+                        function success(res) {
+                            var data = res.body;
+                            if (data.code == 0) {
+                                if (data.content != null) {
+                                    var voValueTmp = "";
+                                    var DaoValueTmp = "";
+                                    var ServiceValueTmp = "";
+                                    var ServiceImplValueTmp = "";
+                                    var MapperValueTmp = "";
+                                    data.content.forEach(function (item) {
+                                        // this.columns = data.content;
+                                        if (item.classVoStr != "" && item.classVoStr != null) {
+                                            voValueTmp += item.classVoStr;
+
+                                        }
+                                        if (item.classDaoStr != "" && item.classDaoStr != null) {
+                                            DaoValueTmp += item.classDaoStr;
+                                        }
+                                        if (item.classServiceStr != "" && item.classServiceStr != null) {
+                                            ServiceValueTmp += item.classServiceStr;
+                                        }
+                                        if (item.classServiceImplStr != "" && item.classServiceImplStr != null) {
+                                            ServiceImplValueTmp += item.classServiceImplStr;
+                                        }
+                                        if (item.mapperStr != "" && item.mapperStr != null) {
+                                            MapperValueTmp += item.mapperStr;
+                                        }
+                                        //
+                                        if (item.classAssociationVoStr != "" && item.classAssociationVoStr != null) {
+                                            voValueTmp += item.classAssociationVoStr;
+                                        }
+                                        if (item.classAssociationDAOStr != "" && item.classAssociationDAOStr != null) {
+                                            DaoValueTmp += item.classAssociationDAOStr;
+                                        }
+                                        if (item.classAssociationServiceStr != "" && item.classAssociationServiceStr != null) {
+                                            ServiceValueTmp += item.classAssociationServiceStr;
+                                        }
+                                        if (item.classAssociationServiceImplStr != "" && item.classAssociationServiceImplStr != null) {
+                                            ServiceImplValueTmp += item.classAssociationServiceImplStr;
+                                        }
+                                        if (item.associationMapperStr != "" && item.associationMapperStr != null) {
+                                            MapperValueTmp += item.associationMapperStr;
+                                        }
+                                    });
+                                    this.voValue = voValueTmp;
+                                    this.DaoValue = DaoValueTmp;
+                                    this.ServiceValue = ServiceValueTmp;
+                                    this.ServiceImplValue = ServiceImplValueTmp;
+                                    this.MapperValue = MapperValueTmp;
+
+                                } else {
+                                    alert(data.msg);
+                                }
+                            } else {
+                                alert(data.msg)
+                            }
+                        }
+                    );
+            }, downloadAssociation: function () {
+                //选择数据库选项后初始化tables
+                var downloadUrl = host + '/generateAssociation/download?'
+                    + "dataBase=" + this.chooseDataBaseValue
+                    + "&basePackage=" + this.packageValue
+                    + "&tableBase=" + this.chooseTableValue
+                    + "&hasChooseAssociationLeftTable=" + this.hasChooseAssociationLeftTable
+                    + "&hasChooseAssociationLeftField=" + this.hasChooseAssociationLeftField
+                    + "&hasChooseAssociationRightTable=" + this.hasChooseAssociationRightTable
+                    + "&hasChooseAssociationRightField=" + this.hasChooseAssociationRightField
+                window.open(downloadUrl);
+
+            }, selectFieldBase: function (ele) {
+                this.chooseColumnValue = ele.target.value;
+
+            }, selectFieldBaseAssociation: function (ele) {
+
+                this.chooseColumnAssociationValue = ele.target.value;
+
+            }, addAssociation: function () {//添加关联关系
+                var i = this.chooseAssociationI;
+                this.chooseAssociation.push(1);
+                this.updateAssociationInfo();
+                this.chooseAssociationI = this.chooseAssociationI + 1;
+                console.info(this.tables);
+            }, delAssociation: function () {
+                this.chooseAssociation.pop();
+            }, chooseAssociationLeftTableFunction: function (ele) {
+                var index = ele.target.dataset.index;
+                this.hasChooseAssociationLeftTable.splice(index - 1, 1, ele.target.value);
+                // console.info(this.hasChooseAssociationLeftTable);
+                // console.info("chooseAssociationLeftTableFunction", ele.target.dataset.index);
+                // console.info("hasChooseAssociationLeftTable", this.hasChooseAssociationLeftTable);
+
+                this.$http.get(host + '/mybatis/getAllColumns?dataBase='
+                    + this.chooseDataBaseValue + '&tableName=' + this.hasChooseAssociationLeftTable[index - 1])
+                    .then(
+                        function success(res) {
+                            var data = res.body;
+                            if (data.code == 0) {
+                                if (data.content != null) {
+                                    // console.info("this.chooseAssociationLeftField", this.chooseAssociationLeftField);
+                                    this.chooseAssociationLeftField.splice(index, 1, data.content);
+                                    // console.info("this.chooseAssociationLeftField[index]", this.chooseAssociationLeftField[index]);
+                                    // console.info("this.chooseAssociationLeftField", this.chooseAssociationLeftField);
+                                } else {
+                                    alert(data.msg);
+                                }
+                            } else {
+                                alert(this.alertErrorValue)
+                            }
+                        }
+                    );
+
+            }, selectAssociationLeftFieldFunction: function (ele) {
+                var index = ele.target.dataset.index;
+                this.hasChooseAssociationLeftField.splice(index - 1, 1, ele.target.value);
+
+            }, selectAssociationRightTableFunction: function (ele) {
+                var index = ele.target.dataset.index;
+                this.hasChooseAssociationRightTable.splice(index - 1, 1, ele.target.value);
+                this.$http.get(host + '/mybatis/getAllColumns?dataBase='
+                    + this.chooseDataBaseValue + '&tableName=' + this.hasChooseAssociationRightTable[index - 1])
+                    .then(
+                        function success(res) {
+                            var data = res.body;
+                            if (data.code == 0) {
+                                if (data.content != null) {
+                                    this.chooseAssociationRightField.splice(index, 1, data.content);
+                                } else {
+                                    alert(data.msg);
+                                }
+                            } else {
+                                alert(this.alertErrorValue)
+                            }
+                        }
+                    );
+
+            }, selectAssociationRightFieldFunction: function (ele) {
+                var index = ele.target.dataset.index;
+                this.hasChooseAssociationRightField.splice(index - 1, 1, ele.target.value);
+            }, initAssociationInfo: function () {
+                //更新可选的表和字段
+                this.chooseAssociationLeftTable = [[]];
+                this.chooseAssociationLeftField = [[]];
+                this.chooseAssociationRightTable = [[]];
+                this.chooseAssociationRightField = [[]];
+
+                this.chooseAssociationLeftTable.push(this.tables);
+                // this.chooseAssociationLeftField.push(this.columns);
+                this.chooseAssociationRightTable.push(this.tables);
+                // this.chooseAssociationRightField.push(this.columns);
+                console.info("更新可选的表和字段", this.chooseAssociationLeftTable);
+            }, updateAssociationInfo: function () {
+                this.chooseAssociationLeftTable.push(this.tables);
+                // this.chooseAssociationLeftField.push(this.columns);
+                this.chooseAssociationRightTable.push(this.tables);
+                // this.chooseAssociationRightField.push(this.columns);
+                // console.info("更新可选的表和字段", this.chooseAssociationLeftTable);
+            }
+        }
+    });
+
+    //初始化
+    vue.init();
+</script>
+</html>
