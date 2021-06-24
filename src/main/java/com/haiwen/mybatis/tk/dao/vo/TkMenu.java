@@ -1,6 +1,7 @@
 package com.haiwen.mybatis.tk.dao.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.haiwen.mybatis.plugin.ChangeLog;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -16,6 +17,7 @@ import java.util.Date;
  * @date 2021/6/22 上午10:25
  */
 @Data
+@ChangeLog
 public class TkMenu {
     @Id
     @Column(name = "id")
