@@ -2,6 +2,9 @@ package com.haiwen;
 
 import lombok.extern.slf4j.Slf4j;
 //import org.mybatis.spring.annotation.MapperScan;
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -35,6 +38,9 @@ public class Application implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 //        UnzipService.generateUnzipBash("idMapName");
+//        Configuration config =new Configuration();
+//        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(config);
+//        sqlSessionFactory.openSession().getMapper()
     }
 
 }

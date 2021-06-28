@@ -1,4 +1,4 @@
-package com.haiwen.mybatis.plugin;
+package com.haiwen.mybatis.xx.executor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.Executor;
@@ -14,6 +14,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -21,34 +22,29 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 
 /**
- * @author chao
- * @version 1.0
- * @description: mybatis拦截打印完整的sql
- * @date 2021/6/23
+ * 举例：拦截的是Executor的 query 的方法
+ * {@link Executor#query(org.apache.ibatis.mapping.MappedStatement, java.lang.Object, org.apache.ibatis.session.RowBounds, org.apache.ibatis.session.ResultHandler)}
  */
 @Component
-@Intercepts({
-        @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
-        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
+@Intercepts({@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
 @Slf4j
-public class MyBatisInterceptorSql implements Interceptor {
+public class ExecutorQueryInterceptor implements Interceptor {
 
     private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
 
     @Override
-    public Object intercept(Invocation invocation) throws Throwable {
-
+    public Object intercept(Invocation invocation) throws InvocationTargetException, IllegalAccessException {
         MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
         Object parameterObject = null;
         if (invocation.getArgs().length > 1) {
             parameterObject = invocation.getArgs()[1];
         }
-
         BoundSql boundSql = mappedStatement.getBoundSql(parameterObject);
         Configuration configuration = mappedStatement.getConfiguration();
         String sql = getSql(boundSql, parameterObject, configuration);
-        log.info("sql:{}", sql);
-        return invocation.proceed();
+        log.info("执行查询的 sql:{}", sql);
+        Object result = invocation.proceed();
+        return result;
     }
 
     @Override
@@ -58,6 +54,7 @@ public class MyBatisInterceptorSql implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
+
     }
 
     private String getSql(BoundSql boundSql, Object parameterObject, Configuration configuration) {
@@ -102,7 +99,4 @@ public class MyBatisInterceptorSql implements Interceptor {
         }
         return sql.replaceFirst("\\?", Matcher.quoteReplacement(result));
     }
-
 }
-
-
